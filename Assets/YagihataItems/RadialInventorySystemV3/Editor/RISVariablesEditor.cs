@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
+using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
 
 namespace YagihataItems.RadialInventorySystemV3
@@ -74,6 +75,26 @@ namespace YagihataItems.RadialInventorySystemV3
             var applyEnabled = settings.ApplyEnabled;
             settings.ApplyEnabled = EditorGUILayout.Toggle("Apply Enabled", settings.ApplyEnabled);
             if (settings.ApplyEnabled != applyEnabled)
+                EditorUtility.SetDirty(settings);
+
+            var useCommonMenu = settings.UseCommonMenu;
+            settings.UseCommonMenu = EditorGUILayout.Toggle("UseCommonMenu", settings.UseCommonMenu);
+            if (settings.UseCommonMenu != useCommonMenu)
+                EditorUtility.SetDirty(settings);
+
+            var commonFXLayer = settings.CommonFXLayer;
+            settings.CommonFXLayer = EditorGUILayout.ObjectField("Controller", settings.CommonFXLayer, typeof(RuntimeAnimatorController), true) as RuntimeAnimatorController;
+            if (settings.CommonFXLayer != commonFXLayer)
+                EditorUtility.SetDirty(settings);
+
+            var commonMenu = settings.CommonMenu;
+            settings.CommonMenu = EditorGUILayout.ObjectField("Expression Menu", settings.CommonMenu, typeof(VRCExpressionsMenu), true) as VRCExpressionsMenu;
+            if (settings.CommonMenu != commonMenu)
+                EditorUtility.SetDirty(settings);
+
+            var commonParameters = settings.CommonParameters;
+            settings.CommonParameters = EditorGUILayout.ObjectField("Expression Parameters", settings.CommonParameters, typeof(VRCExpressionParameters), true) as VRCExpressionParameters;
+            if (settings.CommonParameters != commonParameters)
                 EditorUtility.SetDirty(settings);
 
             serializedObject.ApplyModifiedProperties();
