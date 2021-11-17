@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
+using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
 using YagihataItems.YagiUtils;
 
@@ -21,6 +22,10 @@ namespace YagihataItems.RadialInventorySystemV3
         [SerializeField] public RISV3.RISMode MenuMode { get { return risVariables.MenuMode; } set { risVariables.MenuMode = value; } }
         [SerializeField] public bool ApplyEnabled { get { return risVariables.ApplyEnabled; } set { risVariables.ApplyEnabled = value; } }
         [SerializeField] public int[] AdvancedGroupMode { get { return risVariables.AdvancedGroupMode; } set { risVariables.AdvancedGroupMode = value; } }
+        [SerializeField] public bool UseCommonMenu { get { return risVariables.UseCommonMenu; } set { risVariables.UseCommonMenu = value; } }
+        [SerializeField] public RuntimeAnimatorController CommonFXLayer { get { return risVariables.CommonFXLayer; } set { risVariables.CommonFXLayer = value; } }
+        [SerializeField] public VRCExpressionsMenu CommonMenu { get { return risVariables.CommonMenu; } set { risVariables.CommonMenu = value; } }
+        [SerializeField] public VRCExpressionParameters CommonParameters { get { return risVariables.CommonParameters; } set { risVariables.CommonParameters = value; } }
         public void SetVariables(IEditorExtVariables variables)
         {
             if (!(variables is RISVariables))
@@ -34,6 +39,10 @@ namespace YagihataItems.RadialInventorySystemV3
             this.MenuMode = risVariables.MenuMode;
             this.ApplyEnabled = risVariables.ApplyEnabled;
             this.AdvancedGroupMode = risVariables.AdvancedGroupMode;
+            this.UseCommonMenu = risVariables.UseCommonMenu;
+            this.CommonFXLayer = risVariables.CommonFXLayer;
+            this.CommonMenu = risVariables.CommonMenu;
+            this.CommonParameters = risVariables.CommonParameters;
         }
         public IEditorExtVariables GetVariables()
         {
@@ -46,7 +55,11 @@ namespace YagihataItems.RadialInventorySystemV3
                 Groups = this.Groups,
                 MenuMode = this.MenuMode,
                 ApplyEnabled = this.ApplyEnabled,
-                AdvancedGroupMode = this.AdvancedGroupMode
+                AdvancedGroupMode = this.AdvancedGroupMode,
+                UseCommonMenu = this.UseCommonMenu,
+                CommonFXLayer = this.CommonFXLayer,
+                CommonMenu = this.CommonMenu,
+                CommonParameters = this.CommonParameters
             };
         }
     }
@@ -61,5 +74,9 @@ namespace YagihataItems.RadialInventorySystemV3
         [SerializeField] public RISV3.RISMode MenuMode = RISV3.RISMode.Simple;
         [SerializeField] public bool ApplyEnabled = true;
         [SerializeField] public int[] AdvancedGroupMode = new int[Enum.GetNames(typeof(RISV3.PropGroup)).Length];
+        [SerializeField] public bool UseCommonMenu = false;
+        [SerializeField] public RuntimeAnimatorController CommonFXLayer;
+        [SerializeField] public VRCExpressionsMenu CommonMenu;
+        [SerializeField] public VRCExpressionParameters CommonParameters;
     }
 }

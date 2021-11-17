@@ -153,6 +153,17 @@ namespace YagihataItems.RadialInventorySystemV3
                             variables.OptimizeParams = EditorGUILayout.Toggle(RISMessageStrings.Strings.str_OptimizeParameter, variables.OptimizeParams);
                             variables.ApplyEnabled = EditorGUILayout.Toggle(RISMessageStrings.Strings.str_ApplyDefaults, variables.ApplyEnabled);
                             EditorGUILayoutExtra.Space();
+
+                            // 共通メニュー設定
+                            variables.UseCommonMenu = EditorGUILayout.Toggle(RISMessageStrings.Strings.str_UseCommonMenu, variables.UseCommonMenu);
+                            variables.CommonFXLayer =
+                                (RuntimeAnimatorController)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_Controller, variables.CommonFXLayer, typeof(RuntimeAnimatorController), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            variables.CommonMenu =
+                                (VRCExpressionsMenu)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionMenu, variables.CommonMenu, typeof(VRCExpressionsMenu), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            variables.CommonParameters =
+                                (VRCExpressionParameters)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionParameters, variables.CommonParameters, typeof(VRCExpressionParameters), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            EditorGUILayoutExtra.Space();
+
                             var showFXWarning = fxLayer != null && !fxLayer.ValidateWriteDefaults(variables.WriteDefaults);
                             var showParamInfo = !variables.OptimizeParams;
                             memoryOver = memoryAdded > VRCExpressionParameters.MAX_PARAMETER_COST;
@@ -182,6 +193,13 @@ namespace YagihataItems.RadialInventorySystemV3
                             EditorGUILayout.Toggle(RISMessageStrings.Strings.str_WriteDefaults, false);
                             EditorGUILayout.Toggle(RISMessageStrings.Strings.str_OptimizeParameter, true);
                             EditorGUILayout.Toggle(RISMessageStrings.Strings.str_ApplyDefaults, true);
+
+                            // 共通メニュー設定
+                            EditorGUILayoutExtra.Space();
+                            EditorGUILayout.Toggle(RISMessageStrings.Strings.str_UseCommonMenu, false);
+                            EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_Controller, null, typeof(RuntimeAnimatorController), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionMenu, null, typeof(VRCExpressionsMenu), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionParameters, null, typeof(VRCExpressionParameters), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
                         }
 
                         EditorGUILayoutExtra.SeparatorWithSpace();

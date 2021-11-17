@@ -71,6 +71,10 @@ namespace YagihataItems.RadialInventorySystemV3
             public string str_Unselected = "(Unselected)";
             public string str_UseReset = "Use Reset";
             public string str_ApplyDefaults = "SetActive to Default";
+            public string str_UseCommonMenu = "Use Common Menu";
+            public string str_Controller = "Controller";
+            public string str_ExpressionMenu = "Expression Menu";
+            public string str_ExpressionParameters = "Expression Parameters";
         }
         private static bool Initialize = false;
         public static string[] ExclusiveType = new string[4];

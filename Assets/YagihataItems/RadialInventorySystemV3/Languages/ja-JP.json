@@ -49,5 +49,9 @@
   "str_ExclusiveType3": "有効(V2)",
   "str_Unselected": "（未選択）",
   "str_UseReset": "リセットボタン",
-  "str_ApplyDefaults": "デフォルト状態を反映"
+  "str_ApplyDefaults": "デフォルト状態を反映",
+  "str_UseCommonMenu": "共通メニューを使用する",
+  "str_Controller": "Controller",
+  "str_ExpressionMenu": "Expression Menu",
+  "str_ExpressionParameters": "Expression Parameters"
 }
