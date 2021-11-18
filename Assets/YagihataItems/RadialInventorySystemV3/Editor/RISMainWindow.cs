@@ -156,12 +156,15 @@ namespace YagihataItems.RadialInventorySystemV3
 
                             // 共通メニュー設定
                             variables.UseCommonMenu = EditorGUILayout.Toggle(RISMessageStrings.Strings.str_UseCommonMenu, variables.UseCommonMenu);
-                            variables.CommonFXLayer =
-                                (RuntimeAnimatorController)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_Controller, variables.CommonFXLayer, typeof(RuntimeAnimatorController), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-                            variables.CommonMenu =
-                                (VRCExpressionsMenu)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionMenu, variables.CommonMenu, typeof(VRCExpressionsMenu), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-                            variables.CommonParameters =
-                                (VRCExpressionParameters)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionParameters, variables.CommonParameters, typeof(VRCExpressionParameters), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            using (new EditorGUI.DisabledGroupScope(!variables.UseCommonMenu))
+                            {
+                                variables.CommonFXLayer =
+                                    (RuntimeAnimatorController)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_Controller, variables.CommonFXLayer, typeof(RuntimeAnimatorController), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                                variables.CommonMenu =
+                                    (VRCExpressionsMenu)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionMenu, variables.CommonMenu, typeof(VRCExpressionsMenu), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                                variables.CommonParameters =
+                                    (VRCExpressionParameters)EditorGUILayout.ObjectField(RISMessageStrings.Strings.str_ExpressionParameters, variables.CommonParameters, typeof(VRCExpressionParameters), false, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                            }
                             EditorGUILayoutExtra.Space();
 
                             var showFXWarning = fxLayer != null && !fxLayer.ValidateWriteDefaults(variables.WriteDefaults);
