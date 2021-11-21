@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
@@ -64,7 +65,7 @@ namespace YagihataItems.RadialInventorySystemV3
         }
     }
     [System.Serializable]
-    public class RISVariables : IEditorExtVariables
+    public class RISVariables : IEditorExtVariables, ICloneable
     {
         [SerializeField] public VRCAvatarDescriptor AvatarRoot;
         [SerializeField] public bool WriteDefaults = false;
@@ -78,5 +79,24 @@ namespace YagihataItems.RadialInventorySystemV3
         [SerializeField] public RuntimeAnimatorController CommonFXLayer;
         [SerializeField] public VRCExpressionsMenu CommonMenu;
         [SerializeField] public VRCExpressionParameters CommonParameters;
+
+        public object Clone()
+        {
+            var obj = new RISVariables();
+            obj.AvatarRoot = this.AvatarRoot;
+            obj.WriteDefaults = this.WriteDefaults;
+            obj.OptimizeParams = this.OptimizeParams;
+            obj.FolderID = this.FolderID;
+            obj.Groups.AddRange(this.Groups.Select(n => (PropGroup)n.Clone()));
+            obj.MenuMode = this.MenuMode;
+            obj.ApplyEnabled = this.ApplyEnabled;
+            obj.AdvancedGroupMode = new int[this.AdvancedGroupMode.Length];
+            Array.Copy(this.AdvancedGroupMode, obj.AdvancedGroupMode, this.AdvancedGroupMode.Length);
+            obj.UseCommonMenu = this.UseCommonMenu;
+            obj.CommonFXLayer = this.CommonFXLayer;
+            obj.CommonMenu = this.CommonMenu;
+            obj.CommonParameters = this.CommonParameters;
+            return obj;
+        }
     }
 }

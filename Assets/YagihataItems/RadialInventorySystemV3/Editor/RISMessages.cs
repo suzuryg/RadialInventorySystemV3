@@ -76,6 +76,10 @@ namespace YagihataItems.RadialInventorySystemV3
             public string str_ExpressionMenu = "Expression Menu";
             public string str_ExpressionParameters = "Expression Parameters";
             public string str_DeepenHierarchy = "Deepen";
+            public string str_SourceAvatar = "Source Avatar";
+            public string str_CloneConfirmation = "Would you like to clone settings from the following?\n";
+            public string str_CloneFinished = "Clone finished successfully!";
+            public string str_CloneFailed = "Settings not found.";
         }
         private static bool Initialize = false;
         public static string[] ExclusiveType = new string[4];

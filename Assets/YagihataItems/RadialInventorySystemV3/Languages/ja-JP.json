@@ -54,5 +54,9 @@
   "str_Controller": "Controller",
   "str_ExpressionMenu": "Expression Menu",
   "str_ExpressionParameters": "Expression Parameters",
-  "str_DeepenHierarchy": "階層を深くする"
+  "str_DeepenHierarchy": "階層を深くする",
+  "str_SourceAvatar": "設定コピー元アバター",
+  "str_CloneConfirmation": "下記のアバターから設定をコピーしますか？\n",
+  "str_CloneFinished": "コピー完了！",
+  "str_CloneFailed": "メニュー設定が見つかりません"
 }

@@ -35,6 +35,12 @@ namespace YagihataItems.RadialInventorySystemV3
         private Rect tabScopeRect = new Rect();
         private Texture2D redTexture = null;
         private Texture2D blueTexture = null;
+
+        // 設定コピー
+        private VRCAvatarDescriptor cloneTarget = null;
+        private VRCAvatarDescriptor cloneTargetBefore = null;
+        private IndexedList cloneTargetList = new IndexedList();
+
         [MenuItem("Radial Inventory/RISV3 Editor")]
         private static void Create()
         {
@@ -86,14 +92,58 @@ namespace YagihataItems.RadialInventorySystemV3
                     int memoryAdded = 0;
                     using (new EditorGUI.DisabledGroupScope(rootIsNull))
                     {
+                        // 設定コピー
+                        cloneTargetList.list = avatarDescriptors.Select(n => n.name).ToArray();
+                        cloneTargetList.index = EditorGUILayoutExtra.IndexedStringList(RISMessageStrings.Strings.str_SourceAvatar, cloneTargetList, RISMessageStrings.Strings.str_Unselected);
+                        if (avatarDescriptors.Count() > 0 && cloneTargetList.index >= 0 && cloneTargetList.index < avatarDescriptors.Length)
+                        {
+                            cloneTarget = avatarDescriptors[cloneTargetList.index] as VRCAvatarDescriptor;
+                        }
+                        else
+                        {
+                            cloneTarget = null;
+                            cloneTargetBefore = null;
+                        }
+                        if (rootIsNull)
+                        {
+                            cloneTargetList.index = -1;
+                            cloneTarget = null;
+                            cloneTargetBefore = null;
+                        }
+
                         if(!rootIsNull)
                         {
                             if (avatarRoot != avatarRootBefore)
                             {
                                 RestoreSettings();
                                 avatarRootBefore = avatarRoot;
+
+                                // 設定コピー
+                                cloneTargetList.index = -1;
+                                cloneTarget = null;
+                                cloneTargetBefore = null;
                             }
                             variables.AvatarRoot = avatarRoot;
+                        }
+
+                        // 設定コピー
+                        if (cloneTarget != null && !rootIsNull)
+                        {
+                            if (cloneTarget != cloneTargetBefore)
+                            {
+                                cloneTargetBefore = cloneTarget;
+                                var doCloneSettings = EditorUtility.DisplayDialog("Radial Inventory System", RISMessageStrings.Strings.str_CloneConfirmation + cloneTarget.name, "OK", "Cancel");
+                                if (doCloneSettings)
+                                {
+                                    CloneSettings();
+                                }
+                                else
+                                {
+                                    cloneTargetList.index = -1;
+                                    cloneTarget = null;
+                                    cloneTargetBefore = null;
+                                }
+                            }
                         }
 
                         EditorGUILayoutExtra.SeparatorWithSpace();
@@ -344,6 +394,63 @@ namespace YagihataItems.RadialInventorySystemV3
             else{
                 // 保存された設定なし
                 variables.FolderID = System.Guid.NewGuid().ToString();
+            }
+
+            InitializeGroupList();
+        }
+        private void CloneSettings()
+        {
+            settings = null;
+            var cloneSettings = EditorExtSettingsTool.RestoreSettings<RISSettings>(cloneTarget, RISV3.SettingsName) as RISSettings;
+            if (cloneSettings != null){
+                // 設定のクローン
+                variables = (cloneSettings.GetVariables() as RISVariables).Clone() as RISVariables;
+                // フォルダIDの再設定
+                variables.FolderID = System.Guid.NewGuid().ToString();
+                // avatarRootの再設定
+                variables.AvatarRoot = avatarRoot;
+                // TargetObjectの再設定
+                foreach(var groupIndex in Enumerable.Range(0, variables.Groups.Count))
+                {
+                    foreach (var propIndex in Enumerable.Range(0, variables.Groups[groupIndex].Props.Count))
+                    {
+                        GameObject targetObject = null;
+                        // AdvancedModeのTargetObjectsのチェック
+                        foreach (var objIndex in Enumerable.Range(0, variables.Groups[groupIndex].Props[propIndex].TargetObjects.Count))
+                        {
+                            targetObject = variables.Groups[groupIndex].Props[propIndex].TargetObjects[objIndex];
+                            if (targetObject != null)
+                            {
+                                var objPath = YagiAPI.GetGameObjectPath(targetObject, cloneTarget.gameObject);
+                                var targetTransform = avatarRoot.transform.Find(objPath);
+                                if (targetTransform != null)
+                                {
+                                    targetObject = targetTransform.gameObject;
+                                    variables.Groups[groupIndex].Props[propIndex].TargetObjects[objIndex] = targetObject;
+                                }
+                            }
+                        }
+    
+                        // SimpleModeのTargetObjectのチェック
+                        targetObject = variables.Groups[groupIndex].Props[propIndex].TargetObject;
+                        if(targetObject != null)
+                        {
+                            var objPath = YagiAPI.GetGameObjectPath(targetObject, cloneTarget.gameObject);
+                            var targetTransform = avatarRoot.transform.Find(objPath);
+                            if (targetTransform != null)
+                            {
+                                targetObject = targetTransform.gameObject;
+                                variables.Groups[groupIndex].Props[propIndex].TargetObject = targetObject;
+                            }
+    
+                        }
+                    }
+                } // TargetObjectの再設定
+                EditorUtility.DisplayDialog("Radial Inventory System", RISMessageStrings.Strings.str_CloneFinished, "OK");
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Radial Inventory System", RISMessageStrings.Strings.str_CloneFailed, "OK");
             }
 
             InitializeGroupList();
