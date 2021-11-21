@@ -75,6 +75,7 @@ namespace YagihataItems.RadialInventorySystemV3
             public string str_Controller = "Controller";
             public string str_ExpressionMenu = "Expression Menu";
             public string str_ExpressionParameters = "Expression Parameters";
+            public string str_DeepenHierarchy = "Deepen";
         }
         private static bool Initialize = false;
         public static string[] ExclusiveType = new string[4];

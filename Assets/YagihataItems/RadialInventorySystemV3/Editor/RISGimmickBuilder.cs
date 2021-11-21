@@ -904,7 +904,35 @@ namespace YagihataItems.RadialInventorySystemV3
                     propControl.icon = prop.PropIcon;
                     if (propControl.icon == null)
                         propControl.icon = boxIcon;
-                    subMenu.controls.Add(propControl);
+                    // 階層を深くする
+                    if (prop.DeepenHierarchy)
+                    {
+                        // 新しくアセットを開く前に変更を保存
+                        EditorUtility.SetDirty(subMenu);
+                        AssetDatabase.SaveAssets();
+
+                        var confirmationMenuName = prop.GetConfirmationMenuName(variables.MenuMode);
+                        if (string.IsNullOrWhiteSpace(confirmationMenuName))
+                            confirmationMenuName = "[Confirm] " + propName;
+
+                        VRCExpressionsMenu.Control confirmationControl = new VRCExpressionsMenu.Control();
+                        confirmationControl.name = confirmationMenuName;
+                        confirmationControl.type = VRCExpressionsMenu.Control.ControlType.SubMenu;
+                        confirmationControl.icon = prop.PropIcon;
+                        if (confirmationControl.icon == null)
+                            confirmationControl.icon = groupIcon;
+
+                        VRCExpressionsMenu confirmationMenu = UnityUtils.TryGetAsset(subMenuFolder + $"Group{groupIndex}Prop{propIndex}ConfirmationMenu.asset", typeof(VRCExpressionsMenu)) as VRCExpressionsMenu;
+                        confirmationMenu.controls.Add(propControl);
+                        subMenu.controls.Add(confirmationControl);
+
+                        confirmationControl.subMenu = confirmationMenu;
+                        EditorUtility.SetDirty(confirmationMenu);
+                    }
+                    else
+                    {
+                        subMenu.controls.Add(propControl);
+                    }
                 }
                 control.subMenu = subMenu;
                 menu.controls.Add(control);

@@ -569,6 +569,13 @@ namespace YagihataItems.RadialInventorySystemV3
                                     InitializeGameObjectsList(false, targetProp);
                                 gameObjectsReorderableList.DoLayoutList();
                                 targetProp.TargetObjects = (List<GameObject>)gameObjectsReorderableList.list;
+                                // 階層を深くする
+                                using (new EditorGUILayout.HorizontalScope())
+                                {
+                                    targetProp.DeepenHierarchy = EditorGUILayout.Toggle(RISMessageStrings.Strings.str_DeepenHierarchy, targetProp.DeepenHierarchy, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth));
+                                    targetProp.ConfirmationMenuName = EditorGUILayout.TextField(RISMessageStrings.Strings.str_Menu + RISMessageStrings.Strings.str_Name, targetProp.ConfirmationMenuName);
+                                }
+
                             }
                             else
                             {
@@ -588,6 +595,12 @@ namespace YagihataItems.RadialInventorySystemV3
                                 GUILayout.Space(5);
                                 gameObjectsReorderableList = null;
                                 gameObjectsDummyReorderableList.DoLayoutList();
+                                // 階層を深くする
+                                using (new EditorGUILayout.HorizontalScope())
+                                {
+                                    EditorGUILayout.Toggle(RISMessageStrings.Strings.str_DeepenHierarchy, false, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth));
+                                    EditorGUILayout.TextField(RISMessageStrings.Strings.str_Menu + RISMessageStrings.Strings.str_Name, "");
+                                }
 
                             }
                         }

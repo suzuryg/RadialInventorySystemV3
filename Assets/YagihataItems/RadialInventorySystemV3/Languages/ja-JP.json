@@ -53,5 +53,6 @@
   "str_UseCommonMenu": "共通メニューを使用する",
   "str_Controller": "Controller",
   "str_ExpressionMenu": "Expression Menu",
-  "str_ExpressionParameters": "Expression Parameters"
+  "str_ExpressionParameters": "Expression Parameters",
+  "str_DeepenHierarchy": "階層を深くする"
 }

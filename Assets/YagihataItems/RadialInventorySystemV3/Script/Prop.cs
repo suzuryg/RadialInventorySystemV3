@@ -36,6 +36,10 @@ namespace YagihataItems.RadialInventorySystemV3
         [Range(0,60)] public float ResetSecond = 0f;
         [SerializeField]
         public bool SaveParameter = true;
+        [SerializeField]
+        public bool DeepenHierarchy = false;
+        [SerializeField]
+        public string ConfirmationMenuName = "";
         public Prop(GameObject gameObject)
         {
             TargetObject = gameObject;
@@ -62,6 +66,18 @@ namespace YagihataItems.RadialInventorySystemV3
             else
                 return PropName;
         }
+        public string GetConfirmationMenuName(RISV3.RISMode menuMode)
+        {
+            if (string.IsNullOrEmpty(ConfirmationMenuName))
+            {
+                if (menuMode == RISV3.RISMode.Simple || menuMode == RISV3.RISMode.Advanced)
+                    return "[Confirm] " + GetPropName(menuMode);
+                else
+                    return "";
+            }
+            else
+                return ConfirmationMenuName;
+        }
         public object Clone()
         {
             var obj = ScriptableObject.CreateInstance<Prop>();
@@ -78,6 +94,8 @@ namespace YagihataItems.RadialInventorySystemV3
             obj.UseResetTimer = this.UseResetTimer;
             obj.ResetSecond = this.ResetSecond;
             obj.SaveParameter = this.SaveParameter;
+            obj.DeepenHierarchy = this.DeepenHierarchy;
+            obj.ConfirmationMenuName = this.ConfirmationMenuName;
             return obj;
         }
 
@@ -99,7 +117,9 @@ namespace YagihataItems.RadialInventorySystemV3
                    EqualityComparer<Material>.Default.Equals(MaterialOverride, prop.MaterialOverride) &&
                    UseResetTimer == prop.UseResetTimer &&
                    ResetSecond == prop.ResetSecond &&
-                   SaveParameter == prop.SaveParameter;
+                   SaveParameter == prop.SaveParameter &&
+                   DeepenHierarchy == prop.DeepenHierarchy &&
+                   ConfirmationMenuName == prop.ConfirmationMenuName;
         }
 
         public override int GetHashCode()
@@ -121,6 +141,8 @@ namespace YagihataItems.RadialInventorySystemV3
             hashCode = hashCode * -1521134295 + UseResetTimer.GetHashCode();
             hashCode = hashCode * -1521134295 + ResetSecond.GetHashCode();
             hashCode = hashCode * -1521134295 + SaveParameter.GetHashCode();
+            hashCode = hashCode * -1521134295 + DeepenHierarchy.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ConfirmationMenuName);
             return hashCode;
         }
     }
