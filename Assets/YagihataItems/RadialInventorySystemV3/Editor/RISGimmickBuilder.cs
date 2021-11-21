@@ -914,6 +914,7 @@ namespace YagihataItems.RadialInventorySystemV3
             EditorUtility.SetDirty(menu);
             EditorUtility.SetDirty(avatar.expressionsMenu);
             EditorUtility.SetDirty(avatar);
+            AssetDatabase.SaveAssets();
         }
 
         private static void TryAddParam(RISVariables variables, string name, float defaultValue, bool saved)
